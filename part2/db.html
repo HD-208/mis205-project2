@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库查看</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #C8102E; margin-bottom: 20px; text-align: center; }
+        .nav { margin-bottom: 20px; }
+        .nav a { background: #C8102E; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; }
+        .section { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #C8102E; margin-bottom: 15px; border-bottom: 2px solid #C8102E; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5f5f5; font-weight: 600; }
+        tr:hover { background: #f9f9f9; }
+        .highlight { background: #FFF9C4; font-weight: bold; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .tag-student { background: #E3F2FD; color: #1565C0; }
+        .tag-staff { background: #FFF3E0; color: #EF6C00; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← 返回系统首页</a>
+        </div>
+        <h1>📊 数据库查看器</h1>
+
+        <div class="section">
+            <h2>👥 school_personnel - 学校人员数据库</h2>
+            <table id="personnelTable"></table>
+        </div>
+
+        <div class="section">
+            <h2>👤 users - 系统注册用户</h2>
+            <table id="usersTable"></table>
+        </div>
+
+        <div class="section">
+            <h2>📅 events - 活动列表</h2>
+            <table id="eventsTable"></table>
+        </div>
+    </div>
+
+    <script>
+        const schoolPersonnel = [
+            { id: 1, full_name: '田野', student_employee_id: '12411802', email: '12411802@mail.sustech.edu.cn', department: '计算机科学与工程系', college_system: '致仁书院', role: '学生' },
+            { id: 2, full_name: '蓝浩轩', student_employee_id: '12411721', email: '12411721@mail.sustech.edu.cn', department: '计算机科学与工程系', college_system: '树德书院', role: '学生' },
+            { id: 3, full_name: '黄鼎', student_employee_id: '12411818', email: '12411818@mail.sustech.edu.cn', department: '计算机科学与工程系', college_system: '树仁书院', role: '学生' },
+            { id: 4, full_name: '张三', student_employee_id: '12400001', email: '12400001@mail.sustech.edu.cn', department: '电子与电气工程系', college_system: '致诚书院', role: '学生' },
+            { id: 5, full_name: '李四', student_employee_id: '12400002', email: '12400002@mail.sustech.edu.cn', department: '理学院', college_system: '树礼书院', role: '学生' },
+            { id: 6, full_name: '王五', student_employee_id: '12400003', email: '12400003@mail.sustech.edu.cn', department: '商学院', college_system: '致新书院', role: '学生' },
+            { id: 7, full_name: '刘教授', student_employee_id: '12000001', email: '12000001@mail.sustech.edu.cn', department: '计算机科学与工程系', college_system: null, role: '教职工' },
+            { id: 8, full_name: '周老师', student_employee_id: '12000002', email: '12000002@mail.sustech.edu.cn', department: '学生工作部', college_system: null, role: '教职工' },
+            { id: 9, full_name: '南科大学生', student_employee_id: '12400000', email: '12400000@mail.sustech.edu.cn', department: '计算机科学与工程系', college_system: '致仁书院', role: '学生' }
+        ];
+
+        const users = [
+            { id: 'demo-user-1', email: '12400000@mail.sustech.edu.cn', full_name: '南科大学生', student_employee_id: '12400000', personnel_id: 9 }
+        ];
+
+        const demoEvents = [
+            { id: 1, title: 'SUSTech Hackathon 2026', location: '工学院南楼', event_time: '2026-06-15T09:00', max_attendees: 80, organizer_name: '计算机科学与工程系' },
+            { id: 2, title: '致仁书院读书分享会', location: '琳恩图书馆一楼会议室', event_time: '2026-06-20T19:00', max_attendees: 30, organizer_name: '致仁书院学生会' },
+            { id: 3, title: '校长杯篮球赛决赛', location: '一期体育馆', event_time: '2026-06-25T18:00', max_attendees: 500, organizer_name: '体育中心' },
+            { id: 4, title: '学术前沿讲座：AI与未来', location: '理学院报告厅', event_time: '2026-06-28T15:00', max_attendees: 200, organizer_name: '科研部' },
+            { id: 5, title: '英语角：跨文化交流', location: '人文社科学院楼', event_time: '2026-06-18T16:00', max_attendees: 40, organizer_name: '英语协会' },
+            { id: 6, title: '树德书院迎新晚会', location: '学生活动中心', event_time: '2026-06-22T19:00', max_attendees: 200, organizer_name: '树德书院学生会' },
+            { id: 7, title: '机器人社团展示活动', location: '工学院南楼大厅', event_time: '2026-06-19T14:00', max_attendees: 100, organizer_name: '机器人社团' },
+            { id: 8, title: '商学院职业发展讲座', location: '商学院楼', event_time: '2026-06-26T15:00', max_attendees: 150, organizer_name: '商学院职业发展中心' },
+            { id: 9, title: '羽毛球友谊赛', location: '一期体育馆羽毛球场', event_time: '2026-06-21T10:00', max_attendees: 60, organizer_name: '羽毛球协会' },
+            { id: 10, title: '环境科学与工程学院学术论坛', location: '环境学院楼报告厅', event_time: '2026-06-29T09:00', max_attendees: 120, organizer_name: '环境学院学术部' }
+        ];
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+
+        function getRoleTag(role) {
+            return role === '学生' ? '<span class="tag tag-student">学生</span>' : '<span class="tag tag-staff">教职工</span>';
+        }
+
+        function loadPersonnelTable() {
+            const table = document.getElementById('personnelTable');
+            table.innerHTML = `
+                <thead><tr><th>ID</th><th>姓名</th><th>学号</th><th>邮箱</th><th>院系</th><th>书院</th><th>身份</th></tr></thead>
+                <tbody>${schoolPersonnel.map(p => `
+                    <tr class="${p.id <= 3 ? 'highlight' : ''}">
+                        <td>${p.id}</td>
+                        <td><strong>${p.full_name}</strong></td>
+                        <td>${p.student_employee_id}</td>
+                        <td><code>${p.email}</code></td>
+                        <td>${p.department || '-'}</td>
+                        <td>${p.college_system || '-'}</td>
+                        <td>${getRoleTag(p.role)}</td>
+                    </tr>
+                `).join('')}</tbody>
+            `;
+        }
+
+        function loadUsersTable() {
+            const table = document.getElementById('usersTable');
+            table.innerHTML = `
+                <thead><tr><th>用户ID</th><th>姓名</th><th>邮箱</th><th>学号</th><th>关联人员ID</th></tr></thead>
+                <tbody>${users.map(u => `
+                    <tr>
+                        <td><code>${u.id}</code></td>
+                        <td><strong>${u.full_name}</strong></td>
+                        <td><code>${u.email}</code></td>
+                        <td>${u.student_employee_id}</td>
+                        <td>${u.personnel_id}</td>
+                    </tr>
+                `).join('')}</tbody>
+            `;
+        }
+
+        function loadEventsTable() {
+            const table = document.getElementById('eventsTable');
+            table.innerHTML = `
+                <thead><tr><th>ID</th><th>标题</th><th>地点</th><th>时间</th><th>人数限制</th><th>组织者</th></tr></thead>
+                <tbody>${demoEvents.map(e => `
+                    <tr>
+                        <td>${e.id}</td>
+                        <td><strong>${e.title}</strong></td>
+                        <td>${e.location}</td>
+                        <td>${formatDate(e.event_time)}</td>
+                        <td>${e.max_attendees}</td>
+                        <td>${e.organizer_name}</td>
+                    </tr>
+                `).join('')}</tbody>
+            `;
+        }
+
+        loadPersonnelTable();
+        loadUsersTable();
+        loadEventsTable();
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>测试页面</title>
+</head>
+<body>
+    <h1>测试页面</h1>
+    <button id="test-btn" style="padding: 20px; font-size: 20px;">点击我测试！</button>
+    <p id="test-result"></p>
+
+    <script>
+        console.log('JavaScript 加载成功！');
+        
+        document.getElementById('test-btn').addEventListener('click', function() {
+            console.log('按钮被点击了！');
+            document.getElementById('test-result').textContent = '✅ 成功！点击有反应！时间：' + new Date();
+            alert('按钮点击成功！');
+        });
+        
+        document.getElementById('test-result').textContent = '页面加载成功！';
+    </script>
+</body>
+</html>
